@@ -8,3 +8,11 @@ export type User = {
   id: number
   name: string
 }
+export interface Test{
+    Input: string,
+    Output: string,
+    ExpectedOutput: string,
+    ConsoleOutput: string,
+    ErrorOutput: string,
+    Expanded:boolean
+}
