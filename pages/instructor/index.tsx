@@ -2,35 +2,13 @@ import React, { useState, useEffect, Fragment } from 'react';
 import * as Icons from 'react-feather';
 import Problems from '../../components/Problems';
 import Courses from '../../components/instructors/Courses';
+import dynamic from 'next/dynamic';
 import Nav from '../../components/Nav';
+import { useLoginStatus } from '../../hooks';
+import { useSelector } from 'react-redux';
 import { Tabs, Navigation } from '../../utils/types';
+import { Facebook } from 'react-content-loader';
 interface InstructorProps {}
-
-// const Overview = () => {
-//     return (
-//         <div className='profile-info'>
-//             <div className='profile-card'>
-//                 <div className='titlebar'>Profile</div>
-//             </div>
-//             <div className='courses-problems'>
-//                 <div className='courses'>
-//                     <div className='titlebar'>Courses</div>
-//                     <div className='each-course'>
-//                         <div className='course'>Software Engineering</div>
-//                         <div className='course'>Software Engineering</div>
-//                     </div>
-//                 </div>
-//                 <div className='problems'>
-//                     <div className='titlebar'>Problems</div>
-//                     <div className='each-course'>
-//                         <div className='course'>Palindrome Problem</div>
-//                         <div className='course'>Anagram Problem</div>
-//                     </div>
-//                 </div>
-//             </div>
-//         </div>
-//     );
-// };
 
 const Submissions = () => {
     return <Fragment />;
@@ -43,7 +21,12 @@ let TabNav: Navigation = {
 };
 
 const instructor = (props: InstructorProps) => {
+    const state: any = useSelector((state) => state);
+
     const [ activeTab, setactiveTab ] = useState<any>(Tabs.COURSES);
+
+    const { isLoggedIn, user, userType } = useLoginStatus(state);
+
     useEffect(() => {
         const tab = localStorage.getItem('tab');
         if (tab && tab !== activeTab) {
@@ -51,9 +34,21 @@ const instructor = (props: InstructorProps) => {
         }
     }, []);
 
+    useEffect(
+        () => {
+            console.log('====================================');
+            console.log(state);
+            console.log('====================================');
+        },
+        [ state ]
+    );
+
+    if (state.client.isLoggedIn === null) {
+        return <Facebook />;
+    }
     return (
         <div className='MainPage'>
-            <Nav />
+            <Nav loggedIn={isLoggedIn} />
             <section className='container'>
                 <div className='tabs'>
                     {Object.keys(Tabs).map((name) => {

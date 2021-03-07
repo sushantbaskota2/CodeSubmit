@@ -5,18 +5,14 @@ import { userLogin } from '../actions/index';
 import { useSelector, useDispatch } from 'react-redux';
 import { useToasts, ToastProvider } from 'react-toast-notifications';
 import axios from '../utils/axios';
+import { useLoginStatus } from '../hooks';
+import { UserType } from '../utils/types';
 import { CLIENT_LOGIN } from '../actions/types';
-import { State } from '../store';
 interface Props {}
 
 enum LoginType {
     Login = 'Login',
     SignUp = 'Sign Up'
-}
-
-enum UserType {
-    Student = 'student',
-    Instructor = 'instructor'
 }
 
 const createUser = async ({}) => {};
@@ -31,6 +27,7 @@ const ToastButton = () => {
         />
     );
 };
+
 const login = (props: Props) => {
     const dispatch = useDispatch();
     const router = useRouter();
@@ -43,30 +40,26 @@ const login = (props: Props) => {
     const state: any = useSelector((state) => state);
 
     useEffect(() => {
-        const token = localStorage.getItem('token');
-        (async () => {
-            try {
-                if (!state.client.user && token) {
-                    const { data } = await axios.get('/users/me', { headers: { Authorization: `Bearer ${token}` } });
-                    console.log(state);
-                    if (data) {
-                        if (data.instructor) {
-                            console.log(data.instructor);
-                            router.push(UserType.Instructor);
-                        } else {
-                            router.push(UserType.Student);
-                        }
-                        dispatch({ CLIENT_LOGIN, data });
-                    } else {
-                    }
+        if (!state.client.isLoggedIn) {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                return;
+            }
+            (async function handleLogin() {
+                const { data } = await axios.get('/users/me', { headers: { Authorization: `Bearer ${token}` } });
+                if (data) {
+                    dispatch({ type: CLIENT_LOGIN, payload: data });
+                    router.push(data.instructor ? UserType.Instructor : UserType.Student);
                 }
-            } catch (e) {}
-        })();
+            })();
+        } else {
+            router.push(state.client.user.type ? UserType.Instructor : UserType.Student);
+        }
     }, []);
 
     return (
         <div className='MainPage'>
-            <Nav />
+            <Nav loggedIn={state.client.isLoggedIn} />
             <div className='container'>
                 <ToastProvider>
                     <div className='login-card'>
@@ -160,7 +153,7 @@ const login = (props: Props) => {
                                 value={loginType}
                                 onClick={
                                     loginType === LoginType.Login ? (
-                                        () => userLogin({ email: emailAddress, password, dispatch })
+                                        () => userLogin({ email: emailAddress, password, dispatch, router })
                                     ) : (
                                         () => createUser({ email: emailAddress, password, userType, name })
                                     )

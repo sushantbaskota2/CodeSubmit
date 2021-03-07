@@ -1,12 +1,13 @@
 import {createStore, AnyAction} from 'redux';
 import {MakeStore, createWrapper, Context, HYDRATE} from 'next-redux-wrapper';
 import {CLIENT_LOGIN, CLIENT_SIGNOUT} from './actions/types'
+import { composeWithDevTools } from 'remote-redux-devtools'
 export interface State {
     server: any;
     client: any;
 }
 
-const reducer = (state: State = {server: {tick: 'init'}, client:{user:null}}, action: AnyAction) => {
+const reducer = (state: State = {server: {tick: 'lamo'}, client:{user:null, isLoggedIn:null}}, action: AnyAction) => {
     switch (action.type) {
         case HYDRATE:
             return {
@@ -47,8 +48,10 @@ const reducer = (state: State = {server: {tick: 'init'}, client:{user:null}}, ac
     }
 };
 
+const composeEnhancers= composeWithDevTools({realtime:true});
+
 // create a makeStore function
-const makeStore: MakeStore<State> = (context: Context) => createStore(reducer);
+const makeStore: MakeStore<State> = (context: Context) => createStore(reducer,composeEnhancers());
 
 // export an assembled wrapper
 export const wrapper = createWrapper<State>(makeStore, {debug: true});

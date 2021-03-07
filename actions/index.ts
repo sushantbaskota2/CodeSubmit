@@ -1,9 +1,17 @@
 import axios from '../utils/axios'
 import {CLIENT_LOGIN, CLIENT_SIGNOUT} from './types'
-import {LoginData} from '../utils/types'
-export const userLogin = async ({ email, password, dispatch }: LoginData) => {
+import {LoginData, UserType} from '../utils/types'
+
+
+export const userLogin = async ({ email, password, dispatch , router}: LoginData) => {
     const { data } = await axios.post('/users/login', { email, password });
     localStorage.setItem('token', data.token);
+    if(data.user.instructor){
+        router.push(UserType.Instructor)
+    }else{
+        router.push(UserType.Student)
+    }
+    
     dispatch({ type: CLIENT_LOGIN, payload: data.user });
 };
 

@@ -4,6 +4,8 @@ import Nav from '../../components/Nav';
 import Courses from '../../components/students/Courses';
 import Problems from '../../components/Problems';
 import { Navigation } from '../../utils/types';
+import { useLoginStatus } from '../../hooks';
+import { useSelector } from 'react-redux';
 interface Props {}
 interface CourseProps {}
 
@@ -20,9 +22,11 @@ let TabNav: Navigation = {
 
 const student = (props: Props) => {
     const [ activeTab, setactiveTab ] = useState(Tabs.COURSES);
+    const state = useSelector((state) => state);
+    const { isLoggedIn } = useLoginStatus(state);
     return (
         <div className='MainPage'>
-            <Nav />
+            <Nav loggedIn={isLoggedIn} />
             <section className='container'>
                 <div className='tabs'>
                     {Object.keys(Tabs).map((name) => {
