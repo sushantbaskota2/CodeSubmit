@@ -24,6 +24,18 @@ body{
 
 .MainPage{
     font-size: 1.6rem;
+
+    .logout-button{
+        background-color: #4b4a05;
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
+        display: flex;
+        gap: .5rem;
+        cursor:pointer;
+        *{
+            align-self: center;
+        }
+    }
     .navbar{
         height: 6rem;
         display: flex;
@@ -38,6 +50,11 @@ body{
             font-weight: 700;
             font-size: 3rem;
             
+        }
+
+        .action{
+            display: flex;
+            gap: 1rem;
         }
     }
     .container{

@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import Nav from '../components/Nav';
+import { userLogin } from '../actions/index';
+import { useSelector, useDispatch } from 'react-redux';
 import { useToasts, ToastProvider } from 'react-toast-notifications';
+import axios from '../utils/axios';
+import { CLIENT_LOGIN } from '../actions/types';
+import { State } from '../store';
 interface Props {}
 
 enum LoginType {
@@ -9,9 +15,11 @@ enum LoginType {
 }
 
 enum UserType {
-    Student = 'Student',
-    Instructor = 'Instructor'
+    Student = 'student',
+    Instructor = 'instructor'
 }
+
+const createUser = async ({}) => {};
 
 const ToastButton = () => {
     const { addToast } = useToasts();
@@ -24,12 +32,37 @@ const ToastButton = () => {
     );
 };
 const login = (props: Props) => {
+    const dispatch = useDispatch();
+    const router = useRouter();
     const [ loginType, setloginType ] = useState<LoginType.Login | LoginType.SignUp>(LoginType.Login);
     const [ userType, setuserType ] = useState<UserType>(UserType.Student);
     const [ emailAddress, setemailAddress ] = useState<string>('');
     const [ name, setname ] = useState<string>('');
     const [ password, setpassword ] = useState<string>('');
     const [ confirmPassword, setconfirmPassword ] = useState<string>('');
+    const state: any = useSelector((state) => state);
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        (async () => {
+            try {
+                if (!state.client.user && token) {
+                    const { data } = await axios.get('/users/me', { headers: { Authorization: `Bearer ${token}` } });
+                    console.log(state);
+                    if (data) {
+                        if (data.instructor) {
+                            console.log(data.instructor);
+                            router.push(UserType.Instructor);
+                        } else {
+                            router.push(UserType.Student);
+                        }
+                        dispatch({ CLIENT_LOGIN, data });
+                    } else {
+                    }
+                }
+            } catch (e) {}
+        })();
+    }, []);
 
     return (
         <div className='MainPage'>
@@ -120,8 +153,19 @@ const login = (props: Props) => {
                                     </div>
                                 </div>
                             )}
-                            <ToastButton />
-                            <input className='field login-submit' type='button' value={loginType} />
+                            {/* <ToastButton /> */}
+                            <input
+                                className='field login-submit'
+                                type='button'
+                                value={loginType}
+                                onClick={
+                                    loginType === LoginType.Login ? (
+                                        () => userLogin({ email: emailAddress, password, dispatch })
+                                    ) : (
+                                        () => createUser({ email: emailAddress, password, userType, name })
+                                    )
+                                }
+                            />
                             {LoginType.SignUp === loginType ? (
                                 <span className='field alternate'>
                                     Have an Account?{' '}
