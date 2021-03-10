@@ -24,18 +24,22 @@ const problemsDummy = [
         assigned: true
     }
 ];
-const Problems = () => {
+const Problems = ({ problems }: any) => {
+    console.log('====================================');
+    console.log(problems);
+    console.log('====================================');
     return (
         <ListView title={'Problems'}>
-            {problemsDummy.map(({ problemName, courseName, assigned }) => (
-                <div key={problemName} className='list-item'>
-                    <div>
-                        <span>{problemName}</span>
-                        <span className='extra'>{courseName}</span>
+            {problems &&
+                problems.map(({ title, courseID, assign }: any) => (
+                    <div key={title} className='list-item'>
+                        <div>
+                            <span>{title}</span>
+                            <span className='extra'>{courseID}</span>
+                        </div>
+                        {assign ? <Icons.CheckCircle /> : <span className='assignButton'>Assign</span>}
                     </div>
-                    {assigned ? <Icons.CheckCircle /> : <span className='assignButton'>Assign</span>}
-                </div>
-            ))}
+                ))}
         </ListView>
     );
 };

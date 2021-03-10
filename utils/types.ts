@@ -1,5 +1,4 @@
 export enum Tabs {
-    OVERVIEW = 'Overview',
     COURSES = 'Courses',
     PROBLEMS = 'Problems',
     SUBMISSIONS = 'Submissions'
