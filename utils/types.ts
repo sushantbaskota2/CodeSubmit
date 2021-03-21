@@ -16,5 +16,11 @@ export type LoginData = {
     email: string;
     password: string;
     dispatch: Function;
-    router: any
+    router: any;
+    toast:Function;
 };
+
+export enum LoginType {
+    Login = 'Login',
+    SignUp = 'Sign Up'
+}

@@ -339,6 +339,25 @@ body{
                 border-radius: 5px;
                 padding: 1rem;
                 margin: 1rem 0;
+                display: flex;
+                justify-content: space-between;
+                div{
+                    display: flex;
+                    align-self: center;
+                    &.new{
+                        background-color: white;
+                        color: black;
+                        cursor: pointer;
+                        border-radius: 3px;
+                        padding: .5rem;
+                        &:hover{
+                            background-color: lightgray;
+                        }
+                    }
+                    *{
+                        align-self: center;
+                    }
+                }
             }
 
             .list{

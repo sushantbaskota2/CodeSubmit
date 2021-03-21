@@ -1,21 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Nav from '../components/Nav';
-import { userLogin } from '../actions/index';
+import { userLogin, createUser } from '../actions/index';
 import { useSelector, useDispatch } from 'react-redux';
 import { useToasts, ToastProvider } from 'react-toast-notifications';
 import axios from '../utils/axios';
 import { useLoginStatus } from '../hooks';
-import { UserType } from '../utils/types';
+import { UserType, LoginType } from '../utils/types';
 import { CLIENT_LOGIN } from '../actions/types';
 interface Props {}
-
-enum LoginType {
-    Login = 'Login',
-    SignUp = 'Sign Up'
-}
-
-const createUser = async ({}) => {};
 
 const ToastButton = () => {
     const { addToast } = useToasts();
@@ -24,6 +17,39 @@ const ToastButton = () => {
             onClick={() => {
                 return addToast('Aayo hai kanxa', { appearance: 'error', autoDismiss: true });
             }}
+        />
+    );
+};
+
+const LoginButton = ({ loginType, userType, emailAddress, password, dispatch, router, name, setloginType }: any) => {
+    const { addToast } = useToasts();
+    return (
+        <input
+            className='field login-submit'
+            type='button'
+            value={loginType}
+            onClick={
+                loginType === LoginType.Login ? (
+                    () =>
+                        userLogin({
+                            email: emailAddress,
+                            password,
+                            dispatch,
+                            router,
+                            toast: addToast
+                        })
+                ) : (
+                    () =>
+                        createUser({
+                            email: emailAddress,
+                            password,
+                            instructor: userType === UserType.Instructor,
+                            name,
+                            toast: addToast,
+                            setloginType
+                        })
+                )
+            }
         />
     );
 };
@@ -147,17 +173,15 @@ const login = (props: Props) => {
                                 </div>
                             )}
                             {/* <ToastButton /> */}
-                            <input
-                                className='field login-submit'
-                                type='button'
-                                value={loginType}
-                                onClick={
-                                    loginType === LoginType.Login ? (
-                                        () => userLogin({ email: emailAddress, password, dispatch, router })
-                                    ) : (
-                                        () => createUser({ email: emailAddress, password, userType, name })
-                                    )
-                                }
+                            <LoginButton
+                                emailAddress={emailAddress}
+                                userType={userType}
+                                router={router}
+                                dispatch={dispatch}
+                                password={password}
+                                loginType={loginType}
+                                name={name}
+                                setloginType={setloginType}
                             />
                             {LoginType.SignUp === loginType ? (
                                 <span className='field alternate'>

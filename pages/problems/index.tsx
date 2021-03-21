@@ -4,6 +4,7 @@ const NewProblem = dynamic(() => import('../../components/instructors/NewProblem
 import Nav from '../../components/Nav';
 import { useLoginStatus } from '../../hooks';
 import { useSelector } from 'react-redux';
+import { ToastProvider } from 'react-toast-notifications';
 
 interface Props {}
 
@@ -14,7 +15,9 @@ const index = (props: Props) => {
         <div className='MainPage'>
             <Nav loggedIn={isLoggedIn} />
             <div className='container'>
-                <NewProblem />
+                <ToastProvider>
+                    <NewProblem />
+                </ToastProvider>
             </div>
         </div>
     );
