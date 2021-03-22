@@ -59,6 +59,28 @@ body{
     }
     .container{
         margin: 2rem 20% 1rem 20%;
+
+        .course-form{
+            display: block;
+            input{
+                border: $translucentGray;
+                margin: 1rem;
+                width: 50%;
+                display: block;
+                padding: 1rem;
+                border-radius: 3px;
+            }
+            button{
+                margin: 1rem;
+                background-color: teal;
+                padding: 1rem;
+                border-radius: 3px;
+                border: none;
+                color: white;
+                font-weight: 700;
+                cursor: pointer;
+            }
+        }
         .login-card{
             display: flex;
             flex-direction: column;

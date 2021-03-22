@@ -1,14 +1,20 @@
 import ListView from '../ListView';
+import { Facebook } from 'react-content-loader';
+const Courses = ({ courses = [], student }: any) => {
+    if (courses == null) {
+        return <Facebook />;
+    }
 
-const Courses = () => {
     return (
-        <ListView title='Courses'>
-            <div className='list-item'>
-                <div>
-                    <span>CSCI 450</span>
-                    <span className='extra'>Organization of Programming Languages</span>
+        <ListView title='Courses' student>
+            {courses.map(({ courseID, title }: any) => (
+                <div className='list-item'>
+                    <div>
+                        <span>{title}</span>
+                        <span className='extra'>{courseID}</span>
+                    </div>
                 </div>
-            </div>
+            ))}
         </ListView>
     );
 };

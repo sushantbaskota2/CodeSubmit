@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import * as Icons from 'react-feather';
 import { Test as TestProps } from '../interfaces/index';
 
-export const Test = ({ Input, Output, ConsoleOutput, ExpectedOutput, ErrorOutput }: TestProps) => {
+export const Test = ({ input, output, ConsoleOutput, ExpectedOutput, ErrorOutput, run }: any) => {
     const [ expanded, setexpanded ] = useState(false);
 
     const toggle = () => {
@@ -14,27 +14,35 @@ export const Test = ({ Input, Output, ConsoleOutput, ExpectedOutput, ErrorOutput
             <div className='main'>
                 <div className='title' onClick={() => toggle()}>
                     {expanded ? <Icons.ChevronDown /> : <Icons.ChevronRight />}
-                    <span>Test 1</span>
+                    <span>Test</span>
                 </div>
                 <div className='icons'>
-                    <Icons.CheckCircle color='green' />
-                    <Icons.PlayCircle />
+                    {run === true && <Icons.CheckCircle color='green' />}
+                    {/* <Icons.PlayCircle /> */}
                 </div>
             </div>
             <div className={`extra ${expanded ? 'show' : ''}`}>
                 <div className='options'>
                     <div className='option'>Input:</div>
                     <div className='option'>Output:</div>
-                    <div className='option'>Expected Output:</div>
-                    <div className='option'>Console Output:</div>
-                    <div className='option'>Error Output:</div>
+                    {run === true && (
+                        <Fragment>
+                            <div className='option'>Expected Output:</div>
+                            <div className='option'>Console Output:</div>
+                            <div className='option'>Error Output:</div>
+                        </Fragment>
+                    )}
                 </div>
                 <div className='values'>
-                    <div className='value'>{Input}</div>
-                    <div className='value'>{Output}</div>
-                    <div className='value'>{ExpectedOutput}</div>
-                    <div className='value'>{ConsoleOutput}</div>
-                    <div className='value'>{ErrorOutput}</div>
+                    <div className='value'>{input}</div>
+                    <div className='value'>{output}</div>
+                    {run === true && (
+                        <Fragment>
+                            <div className='value'>{ExpectedOutput}</div>
+                            <div className='value'>{ConsoleOutput}</div>
+                            <div className='value'>{ErrorOutput}</div>
+                        </Fragment>
+                    )}
                 </div>
             </div>
         </div>

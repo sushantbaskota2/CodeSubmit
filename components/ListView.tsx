@@ -8,10 +8,15 @@ const ListView = (props: any) => {
         <div className='list-container'>
             <div className='list-header'>
                 <div>{props.title}</div>
-                <div className='new' onClick={() => router.push('/problems')}>
-                    <PlusSquare />
-                    <span>Add Course</span>
-                </div>
+                {!props.student && (
+                    <div
+                        className='new'
+                        onClick={() => (props.add === 'Course' ? router.push('/courses') : router.push('/problems'))}
+                    >
+                        <PlusSquare />
+                        <span>Add {props.add}</span>
+                    </div>
+                )}
             </div>
             <div className='list'>{props.children}</div>
         </div>

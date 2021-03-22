@@ -9,6 +9,8 @@ import * as Icons from 'react-feather';
 import axios from '../../utils/axios';
 import { useToasts, ToastProvider } from 'react-toast-notifications';
 import { useSelector } from 'react-redux';
+import { routeros } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
+import { useRouter } from 'next/router';
 
 interface TestProps {
     id: number;
@@ -85,6 +87,7 @@ const NewProblem = () => {
     const [ assign, setassign ] = useState<boolean>(false);
     const { addToast } = useToasts();
     const state: any = useSelector((state) => state);
+    const router = useRouter();
     useEffect(() => {
         const localCode = localStorage.getItem('code');
         if (localCode && localCode !== '') setcode(() => localCode);
@@ -101,7 +104,9 @@ const NewProblem = () => {
                         }
                     });
                     setcourses(data);
-                    setCourseID(courses[0]);
+                    if (courses !== null) {
+                        setCourseID(courses[0]);
+                    }
                 })();
             } catch (e) {
                 console.log('====================================');
@@ -112,6 +117,7 @@ const NewProblem = () => {
     }, []);
 
     const handleSubmit = async () => {
+        const token = localStorage.getItem('token');
         if (problemName === '') {
             addToast(`Problem Name can't be empty.`, { appearance: 'warning', autoDismiss: true });
             return;
@@ -146,14 +152,23 @@ const NewProblem = () => {
         console.log('====================================');
         console.log(problem);
         console.log('====================================');
-        // const { data: problem } = await axios.post('/problems', {
-        //     courseID,
-        //     title: problemName,
-        //     description,
-        //     testcases,
-        //     assign,
-        //     starterCode: code
-        // });
+        const { data } = await axios.post(
+            '/problems',
+            {
+                courseID,
+                title: problemName,
+                description,
+                testcases,
+                assign,
+                starterCode: code
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        );
+        router.push('instructor');
     };
     return (
         <Fragment>

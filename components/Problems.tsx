@@ -1,7 +1,7 @@
 import React from 'react';
 import ListView from './ListView';
 import * as Icons from 'react-feather';
-
+import { Facebook } from 'react-content-loader';
 const problemsDummy = [
     {
         problemName: 'Check Palindrome',
@@ -24,20 +24,23 @@ const problemsDummy = [
         assigned: true
     }
 ];
-const Problems = ({ problems }: any) => {
+const Problems = ({ problems, student = false }: any) => {
     console.log('====================================');
     console.log(problems);
     console.log('====================================');
+    if (problems == null) {
+        return <Facebook />;
+    }
     return (
-        <ListView title={'Problems'}>
+        <ListView title={'Problems'} student={student}>
             {problems &&
                 problems.map(({ title, courseID, assign }: any) => (
                     <div key={title} className='list-item'>
                         <div>
                             <span>{title}</span>
-                            <span className='extra'>{courseID}</span>
+                            {/* <span className='extra'>{courseID}</span> */}
                         </div>
-                        {assign ? <Icons.CheckCircle /> : <span className='assignButton'>Assign</span>}
+                        {!student && (assign ? <Icons.CheckCircle /> : <span className='assignButton'>Assign</span>)}
                     </div>
                 ))}
         </ListView>

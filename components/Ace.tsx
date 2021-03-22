@@ -10,21 +10,20 @@ type AceProps = {};
 import { tests } from '../utils/sampledata';
 import { Test } from '../interfaces/index';
 import { Test as TestList } from './Test';
+import axios from '../utils/axios';
 
-
-const Ace: React.FC<AceProps> = () => {
+const Ace: React.FC<any> = (props) => {
     const [ consoletab, setconsoletab ] = useState<0 | 1>(0);
-    const [ code, setcode ] = useState<string>(`function onLoad(editor) {
-
-}
-`);
+    const [ code, setcode ] = useState<string>(props.starterCode);
+    const [ testcases, settestcases ] = useState<any>(props.testcases);
+    const [ submission, setsubmission ] = useState<any>(null);
     const toggle = () => {
         setconsoletab(consoletab ? 0 : 1 || consoletab ? 1 : 0);
     };
     return (
         <React.Fragment>
             <AceEditor
-                placeholder='hero'
+                placeholder=''
                 mode='javascript'
                 theme='solarized_dark'
                 name='solution'
@@ -52,16 +51,26 @@ const Ace: React.FC<AceProps> = () => {
                         <div onClick={() => toggle()} className={`tab ${consoletab === 0 ? 'active' : ''}`}>
                             TESTS
                         </div>
-                        <div onClick={() => toggle()} className={`tab ${consoletab === 1 ? 'active' : ''}`}>
+                        {/* <div onClick={() => toggle()} className={`tab ${consoletab === 1 ? 'active' : ''}`}>
                             CUSTOM TESTS
-                        </div>
+                        </div> */}
                     </div>
-                    <div className='run-button'>
+                    <div
+                        className='run-button'
+                        onClick={async () => {
+                            const { data } = await axios.post('/solve', {
+                                studentCode: code,
+                                testcases
+                            });
+                            console.log(data);
+                            setsubmission(data);
+                        }}
+                    >
                         <Icons.PlayCircle />
                         <span>Run Tests</span>
                     </div>
                 </div>
-                <div className='tests'>{tests.map((test: Test) => <TestList {...test} />)}</div>
+                <div className='tests'>{testcases.map((test: Test) => <TestList {...test} />)}</div>
             </div>
         </React.Fragment>
     );
