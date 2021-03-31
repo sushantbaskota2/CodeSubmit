@@ -19,11 +19,16 @@ const Nav = (props: Props) => {
 
     return (
         <nav className='navbar'>
-            <div className='title'>
+            <div
+                className='title'
+                onClick={() => {
+                    router.push('/');
+                }}
+            >
                 <span>CodeSubmit</span>
             </div>
             <div className='action'>
-                <Bell fill='white' />
+                {/* <Bell fill='white' /> */}
                 <div className='profile' />
                 {state.client.user && (
                     <div className='logout-button' onClick={() => userLogout({ token, router, dispatch })}>

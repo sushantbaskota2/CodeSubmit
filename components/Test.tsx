@@ -2,7 +2,7 @@ import React, { Fragment, useState } from 'react';
 import * as Icons from 'react-feather';
 import { Test as TestProps } from '../interfaces/index';
 
-export const Test = ({ input, output, ConsoleOutput, ExpectedOutput, ErrorOutput, run }: any) => {
+export const Test = ({ input, output, ConsoleOutput, ExpectedOutput, ErrorOutput, run, submission, score }: any) => {
     const [ expanded, setexpanded ] = useState(false);
 
     const toggle = () => {
@@ -17,7 +17,8 @@ export const Test = ({ input, output, ConsoleOutput, ExpectedOutput, ErrorOutput
                     <span>Test</span>
                 </div>
                 <div className='icons'>
-                    {run === true && <Icons.CheckCircle color='green' />}
+                    {submission !== null &&
+                        (submission === 'TRUE' ? <Icons.CheckCircle color='green' /> : <Icons.XCircle color='red' />)}
                     {/* <Icons.PlayCircle /> */}
                 </div>
             </div>

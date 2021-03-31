@@ -6,17 +6,21 @@ import 'ace-builds/src-noconflict/theme-solarized_dark';
 import 'ace-builds/src-noconflict/snippets/javascript';
 import 'ace-builds/src-noconflict/ext-language_tools';
 import 'ace-builds/src-noconflict/ext-searchbox';
+
 type AceProps = {};
 import { tests } from '../utils/sampledata';
 import { Test } from '../interfaces/index';
 import { Test as TestList } from './Test';
 import axios from '../utils/axios';
+import { Code, Instagram } from 'react-content-loader';
 
 const Ace: React.FC<any> = (props) => {
     const [ consoletab, setconsoletab ] = useState<0 | 1>(0);
     const [ code, setcode ] = useState<string>(props.starterCode);
     const [ testcases, settestcases ] = useState<any>(props.testcases);
     const [ submission, setsubmission ] = useState<any>(null);
+    const [ loading, setLoading ] = useState<Boolean>(false);
+
     const toggle = () => {
         setconsoletab(consoletab ? 0 : 1 || consoletab ? 1 : 0);
     };
@@ -58,11 +62,20 @@ const Ace: React.FC<any> = (props) => {
                     <div
                         className='run-button'
                         onClick={async () => {
+                            setLoading(true);
                             const { data } = await axios.post('/solve', {
                                 studentCode: code,
                                 testcases
                             });
+                            setLoading(false);
                             console.log(data);
+                            const count = data.reduce((acc: any, curr: any) => {
+                                if (curr == 'TRUE') {
+                                    return acc + 1;
+                                }
+                                return acc;
+                            }, 0);
+                            props.setscore(Math.round(count / data.length * 100));
                             setsubmission(data);
                         }}
                     >
@@ -70,7 +83,15 @@ const Ace: React.FC<any> = (props) => {
                         <span>Run Tests</span>
                     </div>
                 </div>
-                <div className='tests'>{testcases.map((test: Test) => <TestList {...test} />)}</div>
+                <div className='tests'>
+                    {loading ? (
+                        <Code speed={1} animate={true} />
+                    ) : (
+                        testcases.map((test: Test, i: number) => (
+                            <TestList {...test} submission={submission !== null ? submission[i] : null} key={i} />
+                        ))
+                    )}
+                </div>
             </div>
         </React.Fragment>
     );

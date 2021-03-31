@@ -7,13 +7,14 @@ import { Navigation } from '../../utils/types';
 import { useLoginStatus } from '../../hooks';
 import { useSelector } from 'react-redux';
 import { Facebook } from 'react-content-loader';
+import Submission from '../../components/students/Submission';
 interface Props {}
 interface CourseProps {}
 
 enum Tabs {
     COURSES = 'Courses',
     PROBLEMS = 'Problems',
-    GRADES = 'Grades',
+    // GRADES = 'Grades',
     SUBMISSIONS = 'Submissions'
 }
 
@@ -23,24 +24,24 @@ const student = (props: Props) => {
     const { isLoggedIn } = useLoginStatus(state);
     const [ studentData, setstudentData ] = useState<any>({
         courses: null,
-        problems: null
+        problems: null,
+        submissions: null
     });
     let TabNav: Navigation = {
         [Tabs.PROBLEMS]: <Problems problems={studentData.problems} student />,
-        [Tabs.COURSES]: <Courses courses={studentData.courses} student />
+        [Tabs.COURSES]: <Courses courses={studentData.courses} student />,
+        [Tabs.SUBMISSIONS]: <Submission submissions={studentData.submissions} students />
     };
 
     useEffect(
         () => {
             async function getStudentData(auth: any) {
-                const [ { data: problems }, { data: courses } ] = await Promise.all([
+                const [ { data: problems }, { data: courses }, { data: submissions } ] = await Promise.all([
                     axios.get('/problems/student', auth),
-                    axios.get(`/courses/student`, auth)
+                    axios.get(`/courses/student`, auth),
+                    axios.get('/submissions')
                 ]);
-
-                console.log(problems, courses);
-
-                setstudentData({ problems, courses });
+                setstudentData({ problems, courses, submissions });
             }
 
             if (state.client.isLoggedIn) {

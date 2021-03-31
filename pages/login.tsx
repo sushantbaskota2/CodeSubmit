@@ -8,6 +8,7 @@ import axios from '../utils/axios';
 import { useLoginStatus } from '../hooks';
 import { UserType, LoginType } from '../utils/types';
 import { CLIENT_LOGIN } from '../actions/types';
+import { Facebook } from 'react-content-loader';
 interface Props {}
 
 const ToastButton = () => {
@@ -64,11 +65,13 @@ const login = (props: Props) => {
     const [ password, setpassword ] = useState<string>('');
     const [ confirmPassword, setconfirmPassword ] = useState<string>('');
     const state: any = useSelector((state) => state);
+    // const [ loading, setloading ] = useState(true);
 
     useEffect(() => {
         if (!state.client.isLoggedIn) {
             const token = localStorage.getItem('token');
             if (!token) {
+                // setloading(false);
                 return;
             }
             (async function handleLogin() {
@@ -81,7 +84,13 @@ const login = (props: Props) => {
         } else {
             router.push(state.client.user.type ? UserType.Instructor : UserType.Student);
         }
+
+        // return () => setloading(false);
     }, []);
+
+    // if (loading) {
+    //     return <Facebook />;
+    // }
 
     return (
         <div className='MainPage'>

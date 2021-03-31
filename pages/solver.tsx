@@ -4,10 +4,18 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { useEffect, useState } from 'react';
 import axios from '../utils/axios';
 import { Facebook } from 'react-content-loader';
+import { useSelector } from 'react-redux';
+import { useRouter } from 'next/router';
+import { useLoginStatus } from '../hooks';
 const Ace = dynamic(() => import('../components/Ace'), { ssr: false });
+// const { Facebook } = dynamic(() => import('react-content-loader'), { ssr: false });
 
 const solver = () => {
     const [ problemData, setproblemData ] = useState<any>(null);
+    const [ score, setscore ] = useState(0);
+    const state: any = useSelector((state) => state);
+    const { user } = useLoginStatus(state);
+    const router = useRouter();
     useEffect(() => {
         (async () => {
             const { data: problem } = await axios.get('/problems/problem/6058b63679b2b1581c39a30d');
@@ -19,7 +27,7 @@ const solver = () => {
     }, []);
 
     if (problemData == null) {
-        return <Facebook />;
+        return <Facebook uniqueKey={'aayomug'} />;
     }
     return (
         <div className='Solver'>
@@ -67,7 +75,7 @@ const solver = () => {
                     </div>
                 </div>
                 <div className='solution'>
-                    <Ace testcases={problemData.testcases} starterCode={problemData.starterCode} />
+                    <Ace testcases={problemData.testcases} starterCode={problemData.starterCode} setscore={setscore} />
                 </div>
             </div>
             <div className='bottom-footer'>
@@ -78,8 +86,21 @@ const solver = () => {
                     </div>
                 </div>
                 <div className='footer-right'>
-                    <div className='score'>0/100</div>
-                    <div className='submit' onClick={() => {}}>
+                    <div className='score'>{score}/100</div>
+                    <div
+                        className='submit'
+                        onClick={async () => {
+                            const submission = await axios.post('/submissions', {
+                                problemId: problemData._id,
+                                score,
+                                studentId: user._id,
+                                submissionCode: 'sample code'
+                            });
+                            console.log(submission);
+
+                            router.push('/student');
+                        }}
+                    >
                         Submit
                     </div>
                 </div>
