@@ -47,6 +47,14 @@ const NewCourse = (props: Props) => {
                 >
                     Submit
                 </button>
+                <button
+                    onClick={async () => {
+                        router.replace('/instructor');
+                    }}
+                    style={{ backgroundColor: 'red', color: 'white' }}
+                >
+                    Cancel
+                </button>
             </div>
         </Fragment>
     );

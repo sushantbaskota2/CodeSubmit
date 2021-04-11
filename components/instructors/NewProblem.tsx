@@ -9,7 +9,6 @@ import * as Icons from 'react-feather';
 import axios from '../../utils/axios';
 import { useToasts, ToastProvider } from 'react-toast-notifications';
 import { useSelector } from 'react-redux';
-import { routeros } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
 import { useRouter } from 'next/router';
 
 interface TestProps {
@@ -83,7 +82,7 @@ const NewProblem = () => {
     const [ totalPoints, settotalPoints ] = useState<number>(100);
     const [ code, setcode ] = useState<string>('');
     const [ courses, setcourses ] = useState<any>(null);
-    const [ courseID, setCourseID ] = useState<any>(null);
+    const [ courseID, setCourseID ] = useState<any>('');
     const [ assign, setassign ] = useState<boolean>(false);
     const { addToast } = useToasts();
     const state: any = useSelector((state) => state);
@@ -104,9 +103,6 @@ const NewProblem = () => {
                         }
                     });
                     setcourses(data);
-                    if (courses !== null) {
-                        setCourseID(courses[0]);
-                    }
                 })();
             } catch (e) {
                 console.log('====================================');
@@ -172,7 +168,22 @@ const NewProblem = () => {
     };
     return (
         <Fragment>
-            <div className='tabs'>New Problem</div>
+            <div className='tabs'>
+                <div
+                    onClick={() => {
+                        router.replace('/instructor');
+                    }}
+                    className='tab active'
+                    style={{
+                        display: 'flex'
+                    }}
+                >
+                    <Icons.ChevronLeft />
+                    <span>Back</span>
+                </div>
+
+                <div className='tab'>New Problem</div>
+            </div>
             <div className='problem-form'>
                 <div className='field problem-name'>
                     <span>Problem Name</span>
@@ -278,12 +289,16 @@ const NewProblem = () => {
                         className='input-type '
                         onChange={(e) => {
                             setCourseID(e.target.value);
+                            console.log(courseID);
                         }}
                         value={courseID}
                     >
+                        <option className='course-option' value=''>
+                            Select a course
+                        </option>
                         {courses !== null &&
                             courses.map(({ _id, title, courseID }: any, i: number) => (
-                                <option className='course-option' value={_id}>
+                                <option key={_id} className='course-option' value={_id}>
                                     {title} ({courseID})
                                 </option>
                             ))}

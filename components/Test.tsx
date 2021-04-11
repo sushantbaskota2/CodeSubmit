@@ -18,7 +18,11 @@ export const Test = ({ input, output, ConsoleOutput, ExpectedOutput, ErrorOutput
                 </div>
                 <div className='icons'>
                     {submission !== null &&
-                        (submission === 'TRUE' ? <Icons.CheckCircle color='green' /> : <Icons.XCircle color='red' />)}
+                        (submission.status === 'TRUE' ? (
+                            <Icons.CheckCircle color='green' />
+                        ) : (
+                            <Icons.XCircle color='red' />
+                        ))}
                     {/* <Icons.PlayCircle /> */}
                 </div>
             </div>
@@ -26,10 +30,11 @@ export const Test = ({ input, output, ConsoleOutput, ExpectedOutput, ErrorOutput
                 <div className='options'>
                     <div className='option'>Input:</div>
                     <div className='option'>Output:</div>
+                    <div className='option'>Console Output:</div>
                     {run === true && (
                         <Fragment>
                             <div className='option'>Expected Output:</div>
-                            <div className='option'>Console Output:</div>
+
                             <div className='option'>Error Output:</div>
                         </Fragment>
                     )}
@@ -37,10 +42,11 @@ export const Test = ({ input, output, ConsoleOutput, ExpectedOutput, ErrorOutput
                 <div className='values'>
                     <div className='value'>{input}</div>
                     <div className='value'>{output}</div>
+                    <div className='value'>{submission !== null && submission.res.output}</div>
                     {run === true && (
                         <Fragment>
                             <div className='value'>{ExpectedOutput}</div>
-                            <div className='value'>{ConsoleOutput}</div>
+
                             <div className='value'>{ErrorOutput}</div>
                         </Fragment>
                     )}

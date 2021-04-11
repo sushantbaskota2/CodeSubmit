@@ -25,7 +25,7 @@ export const useLoginStatus = (state:any) => {
                 dispatch({type:CLIENT_LOGIN, payload: data})
                 
             }else{
-                router.push('login')
+                router.replace('login')
             }
         }
 

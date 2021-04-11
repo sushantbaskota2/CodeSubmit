@@ -3,6 +3,7 @@ import ListView from './ListView';
 import * as Icons from 'react-feather';
 import { Facebook } from 'react-content-loader';
 import { useRouter } from 'next/router';
+import axios from '../utils/axios';
 // import { routeros } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 const problemsDummy = [
     {
@@ -26,38 +27,58 @@ const problemsDummy = [
         assigned: true
     }
 ];
-const Problems = ({ problems, student = false }: any) => {
+const Problems = ({ problems, submissions, student = false }: any) => {
     const router = useRouter();
     console.log('====================================');
     console.log(problems);
     console.log('====================================');
     if (problems == null) {
-        return <Facebook />;
+        return <Facebook uniqueKey='hero' />;
     }
     return (
         <ListView title={'Problems'} student={student}>
             {problems &&
-                problems.map(({ title, courseID, assign }: any) => (
-                    <div
-                        key={title}
-                        className='list-item'
-                        onClick={
-                            student ? (
-                                () => {
-                                    router.push('/solver');
-                                }
-                            ) : (
-                                () => {}
-                            )
+                problems
+                    .filter((problem: any) => {
+                        if (!student) {
+                            return true;
                         }
-                    >
-                        <div>
-                            <span>{title}</span>
-                            {/* <span className='extra'>{courseID}</span> */}
+                        return !submissions.find((submission: any) => submission.problemId == problem._id);
+                    })
+                    .map(({ title, courseID, assign, _id }: any) => (
+                        <div
+                            key={_id}
+                            className='list-item'
+                            onClick={
+                                student ? (
+                                    () => {
+                                        router.push(`/solver/${_id}`);
+                                    }
+                                ) : (
+                                    () => {}
+                                )
+                            }
+                        >
+                            <div>
+                                <span>{title}</span>
+                                {/* <span className='extra'>{courseID}</span> */}
+                            </div>
+                            {!student &&
+                                (assign ? (
+                                    <Icons.CheckCircle />
+                                ) : (
+                                    <span
+                                        className='assignButton'
+                                        onClick={async () => {
+                                            await axios.patch(`/problems/${_id}`, { assign: true });
+                                            router.reload();
+                                        }}
+                                    >
+                                        Assign
+                                    </span>
+                                ))}
                         </div>
-                        {!student && (assign ? <Icons.CheckCircle /> : <span className='assignButton'>Assign</span>)}
-                    </div>
-                ))}
+                    ))}
         </ListView>
     );
 };

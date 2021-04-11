@@ -1,3 +1,9 @@
 import axios from 'axios';
+import getConfig from "next/config";
+const { publicRuntimeConfig } = getConfig();
 
-export default axios.create({baseURL: 'http://localhost:5000'})
+const  baseURL = publicRuntimeConfig.NEXT_PUBLIC_BASE_URL 
+
+console.log(publicRuntimeConfig);
+
+export default axios.create({baseURL})

@@ -28,7 +28,7 @@ const student = (props: Props) => {
         submissions: null
     });
     let TabNav: Navigation = {
-        [Tabs.PROBLEMS]: <Problems problems={studentData.problems} student />,
+        [Tabs.PROBLEMS]: <Problems submissions={studentData.submissions} problems={studentData.problems} student />,
         [Tabs.COURSES]: <Courses courses={studentData.courses} student />,
         [Tabs.SUBMISSIONS]: <Submission submissions={studentData.submissions} students />
     };
@@ -39,7 +39,7 @@ const student = (props: Props) => {
                 const [ { data: problems }, { data: courses }, { data: submissions } ] = await Promise.all([
                     axios.get('/problems/student', auth),
                     axios.get(`/courses/student`, auth),
-                    axios.get('/submissions')
+                    axios.get('/submissions/student', auth)
                 ]);
                 setstudentData({ problems, courses, submissions });
             }

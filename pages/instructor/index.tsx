@@ -2,6 +2,7 @@ import React, { useState, useEffect, Fragment } from 'react';
 import * as Icons from 'react-feather';
 import Problems from '../../components/Problems';
 import Courses from '../../components/instructors/Courses';
+import Submission from '../../components/instructors/Submission';
 import dynamic from 'next/dynamic';
 import Nav from '../../components/Nav';
 import { useLoginStatus } from '../../hooks';
@@ -11,22 +12,19 @@ import { Facebook } from 'react-content-loader';
 import axios from '../../utils/axios';
 interface InstructorProps {}
 
-const Submissions = () => {
-    return <Fragment />;
-};
-
 const instructor = (props: InstructorProps) => {
     const state: any = useSelector((state) => state);
 
     const [ activeTab, setactiveTab ] = useState<any>(Tabs.COURSES);
     const [ instructorData, setinstructorData ] = useState<any>({
         problems: null,
-        courses: null
+        courses: null,
+        submissions: null
     });
     let TabNav: Navigation = {
         [Tabs.PROBLEMS]: <Problems problems={instructorData.problems} />,
         [Tabs.COURSES]: <Courses courses={instructorData.courses} />,
-        [Tabs.SUBMISSIONS]: <Submissions />
+        [Tabs.SUBMISSIONS]: <Submission submissions={instructorData.submissions} />
     };
     const { isLoggedIn, user, userType } = useLoginStatus(state);
 
@@ -40,14 +38,13 @@ const instructor = (props: InstructorProps) => {
     useEffect(
         () => {
             async function getInstructorData(auth: any) {
-                const [ { data: problems }, { data: courses } ] = await Promise.all([
+                const [ { data: problems }, { data: courses }, { data: submissions } ] = await Promise.all([
                     axios.get('/instructor/problems', auth),
-                    axios.get(`/courses/${state.client.user._id}`, auth)
+                    axios.get(`/courses/${state.client.user._id}`, auth),
+                    axios.get('/instructor/submissions', auth)
                 ]);
 
-                console.log(problems, courses);
-
-                setinstructorData({ problems, courses });
+                setinstructorData({ problems, courses, submissions });
             }
 
             if (state.client.isLoggedIn) {
@@ -60,8 +57,6 @@ const instructor = (props: InstructorProps) => {
         [ state ]
     );
 
-    console.log(instructorData);
-
     useEffect(
         () => {
             console.log('====================================');
@@ -72,7 +67,7 @@ const instructor = (props: InstructorProps) => {
     );
 
     if (state.client.isLoggedIn === null) {
-        return <Facebook />;
+        return <Facebook uniqueKey='hero123' />;
     }
     return (
         <div className='MainPage'>

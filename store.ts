@@ -48,10 +48,10 @@ const reducer = (state: State = {server: {tick: 'lamo'}, client:{user:null, isLo
     }
 };
 
-const composeEnhancers= composeWithDevTools({realtime:true});
+// const composeEnhancers= composeWithDevTools({realtime:true});
 
 // create a makeStore function
-const makeStore: MakeStore<State> = (context: Context) => createStore(reducer,composeEnhancers());
+const makeStore: MakeStore<State> = (context: Context) => createStore(reducer);
 
 // export an assembled wrapper
 export const wrapper = createWrapper<State>(makeStore, {debug: true});

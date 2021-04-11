@@ -94,11 +94,19 @@ body{
                 overflow: hidden;
                 overflow-y: scroll;
                 .student-item{
+                    width: 100%;
                     padding: 1rem;
                     margin-bottom: 0.5rem;
                     border: $translucentGray;
                     background-color: white;
                     border-radius: 3px;
+                    display: inline-flex;
+                    justify-content: space-between;
+                
+                    *{
+                        align-self: center;
+
+                    }
                 }
             }
             .student-items{
@@ -506,6 +514,15 @@ body{
                         font-weight: 500;
                         color: gray;
                     }
+                    .submittedby{
+                        color:blue
+                    }
+                    .score{
+                        border-radius: 50%;
+                        background-color: teal;
+                        color: white;
+                        padding:0.5rem
+                    }
                     .assignButton{
                         padding: 0.5rem;
                         border: 1px gray solid;
@@ -662,7 +679,7 @@ display: flex;
                     .tag{
                         display: flex;
                         font-size: 1.6rem;
-                        align-items: start;
+                        align-items: flex-start;
                         gap: .5rem;
                         font-weight: bolder;
                     }
@@ -915,7 +932,7 @@ height: 100%;
                 font-size: 2rem;
                 font-weight: 700;
                 flex-wrap: wrap;
-                justify-content: start;
+                justify-content: flex-start;
                 gap: 2rem;
                 *{
                     padding: 1rem 2rem;

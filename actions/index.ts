@@ -38,6 +38,6 @@ export const userLogout = async ({token,router, dispatch}:any)=>{
     await axios.post('/users/logout', {}, {headers: {Authorization: `Bearer ${token}`}})
     localStorage.removeItem('token');
     localStorage.removeItem('tab')
-    router.push('login')
+    router.replace('/login')
     dispatch({type:CLIENT_SIGNOUT})
 }

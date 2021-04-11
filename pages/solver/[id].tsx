@@ -2,37 +2,45 @@ import * as Icons from 'react-feather';
 import dynamic from 'next/dynamic';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { useEffect, useState } from 'react';
-import axios from '../utils/axios';
+import axios from '../../utils/axios';
 import { Facebook } from 'react-content-loader';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
-import { useLoginStatus } from '../hooks';
-const Ace = dynamic(() => import('../components/Ace'), { ssr: false });
+import { useLoginStatus } from '../../hooks';
+const Ace = dynamic(() => import('../../components/Ace'), { ssr: false });
 // const { Facebook } = dynamic(() => import('react-content-loader'), { ssr: false });
 
 const solver = () => {
     const [ problemData, setproblemData ] = useState<any>(null);
     const [ score, setscore ] = useState(0);
+    const [ id, setid ] = useState<any>('');
     const state: any = useSelector((state) => state);
     const { user } = useLoginStatus(state);
     const router = useRouter();
-    useEffect(() => {
-        (async () => {
-            const { data: problem } = await axios.get('/problems/problem/6058b63679b2b1581c39a30d');
+    useEffect(
+        () => {
+            const { id } = router.query;
+            setid(id);
+            (async () => {
+                if (id !== undefined) {
+                    const { data: problem } = await axios.get(`/problems/problem/${id}`);
 
-            console.log(problem);
+                    console.log(problem);
 
-            setproblemData(problem);
-        })();
-    }, []);
+                    setproblemData(problem);
+                }
+            })();
+        },
+        [ router.isReady ]
+    );
 
     if (problemData == null) {
-        return <Facebook uniqueKey={'aayomug'} />;
+        return <Facebook uniqueKey={'hero'} />;
     }
     return (
         <div className='Solver'>
             <div className='top-banner'>
-                <div className='left'>
+                <div className='left' onClick={() => router.replace('/student')}>
                     <Icons.ChevronLeft />
                     <span>BACK</span>
                 </div>

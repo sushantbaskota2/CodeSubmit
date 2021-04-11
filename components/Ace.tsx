@@ -70,7 +70,7 @@ const Ace: React.FC<any> = (props) => {
                             setLoading(false);
                             console.log(data);
                             const count = data.reduce((acc: any, curr: any) => {
-                                if (curr == 'TRUE') {
+                                if (curr.status == 'TRUE') {
                                     return acc + 1;
                                 }
                                 return acc;
