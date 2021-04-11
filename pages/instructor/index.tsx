@@ -1,18 +1,16 @@
-import React, { useState, useEffect, Fragment } from 'react';
-import * as Icons from 'react-feather';
+import React, { useState, useEffect } from 'react';
+
 import Problems from '../../components/Problems';
 import Courses from '../../components/instructors/Courses';
 import Submission from '../../components/instructors/Submission';
-import dynamic from 'next/dynamic';
 import Nav from '../../components/Nav';
-import { useLoginStatus } from '../../hooks';
 import { useSelector } from 'react-redux';
 import { Tabs, Navigation } from '../../utils/types';
 import { Facebook } from 'react-content-loader';
 import axios from '../../utils/axios';
-interface InstructorProps {}
+import { useLoginStatus } from '../../hooks';
 
-const instructor = (props: InstructorProps) => {
+const instructor = () => {
     const state: any = useSelector((state) => state);
 
     const [ activeTab, setactiveTab ] = useState<any>(Tabs.COURSES);
@@ -26,7 +24,10 @@ const instructor = (props: InstructorProps) => {
         [Tabs.COURSES]: <Courses courses={instructorData.courses} />,
         [Tabs.SUBMISSIONS]: <Submission submissions={instructorData.submissions} />
     };
-    const { isLoggedIn, user, userType } = useLoginStatus(state);
+    useLoginStatus(state);
+    // if (!isLoggedIn && userType !== 'Instructor') {
+    //     return 'Unauthorized';
+    // }
 
     useEffect(() => {
         const tab = localStorage.getItem('tab');
@@ -71,7 +72,7 @@ const instructor = (props: InstructorProps) => {
     }
     return (
         <div className='MainPage'>
-            <Nav loggedIn={isLoggedIn} />
+            <Nav />
             <section className='container'>
                 <div className='tabs'>
                     {Object.keys(Tabs).map((name) => {

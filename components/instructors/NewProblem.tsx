@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect, useCallback } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import AceEditor from 'react-ace';
 import 'ace-builds/src-noconflict/mode-javascript';
 import 'ace-builds/src-noconflict/theme-solarized_light';
@@ -7,7 +7,7 @@ import 'ace-builds/src-noconflict/ext-language_tools';
 import 'ace-builds/src-noconflict/ext-searchbox';
 import * as Icons from 'react-feather';
 import axios from '../../utils/axios';
-import { useToasts, ToastProvider } from 'react-toast-notifications';
+import { useToasts } from 'react-toast-notifications';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 
@@ -137,18 +137,15 @@ const NewProblem = () => {
                 return;
             }
         }
-        const problem = {
-            courseID,
-            title: problemName,
-            description,
-            testcases,
-            assign,
-            starterCode: code
-        };
-        console.log('====================================');
-        console.log(problem);
-        console.log('====================================');
-        const { data } = await axios.post(
+        // const problem = {
+        //     courseID,
+        //     title: problemName,
+        //     description,
+        //     testcases,
+        //     assign,
+        //     starterCode: code
+        // };
+        await axios.post(
             '/problems',
             {
                 courseID,
@@ -297,7 +294,7 @@ const NewProblem = () => {
                             Select a course
                         </option>
                         {courses !== null &&
-                            courses.map(({ _id, title, courseID }: any, i: number) => (
+                            courses.map(({ _id, title, courseID }: any) => (
                                 <option key={_id} className='course-option' value={_id}>
                                     {title} ({courseID})
                                 </option>

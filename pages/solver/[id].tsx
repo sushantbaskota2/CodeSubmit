@@ -1,6 +1,5 @@
 import * as Icons from 'react-feather';
 import dynamic from 'next/dynamic';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { useEffect, useState } from 'react';
 import axios from '../../utils/axios';
 import { Facebook } from 'react-content-loader';
@@ -17,10 +16,12 @@ const solver = () => {
     const state: any = useSelector((state) => state);
     const { user } = useLoginStatus(state);
     const router = useRouter();
+    console.log(id);
     useEffect(
         () => {
             const { id } = router.query;
             setid(id);
+
             (async () => {
                 if (id !== undefined) {
                     const { data: problem } = await axios.get(`/problems/problem/${id}`);

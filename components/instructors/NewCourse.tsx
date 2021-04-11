@@ -2,9 +2,7 @@ import axios from '../../utils/axios';
 import { useRouter } from 'next/router';
 import React, { useState, Fragment } from 'react';
 
-interface Props {}
-
-const NewCourse = (props: Props) => {
+const NewCourse = () => {
     const [ title, settitle ] = useState('');
     const [ courseID, setcourseID ] = useState('');
     const router = useRouter();
@@ -27,7 +25,7 @@ const NewCourse = (props: Props) => {
                 <button
                     onClick={async () => {
                         const token = localStorage.getItem('token');
-                        const { data } = await axios.post(
+                        await axios.post(
                             '/courses',
                             {
                                 courseID,
@@ -39,9 +37,6 @@ const NewCourse = (props: Props) => {
                                 }
                             }
                         );
-                        console.log('====================================');
-                        console.log(data);
-                        console.log('====================================');
                         router.push('/instructor');
                     }}
                 >

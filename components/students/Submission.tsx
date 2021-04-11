@@ -1,8 +1,8 @@
 import ListView from '../ListView';
 import { Facebook } from 'react-content-loader';
-const Submission = ({ submissions = [], student }: any) => {
+const Submission = ({ submissions = [] }: any) => {
     if (submissions == null) {
-        return <Facebook />;
+        return <Facebook uniqueKey='hero' />;
     }
     if (submissions.length === 0) {
         return <h2>No submissions yet!</h2>;
@@ -10,8 +10,8 @@ const Submission = ({ submissions = [], student }: any) => {
 
     return (
         <ListView title='Submissions' student>
-            {submissions.map(({ score, title, courseID }: any) => (
-                <div className='list-item'>
+            {submissions.map(({ score, title, courseID, _id }: any) => (
+                <div className='list-item' key={_id}>
                     <div>
                         <span>{title}</span>
                         <span className='extra'>{courseID}</span>

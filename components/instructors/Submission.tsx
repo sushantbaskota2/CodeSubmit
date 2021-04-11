@@ -1,6 +1,6 @@
 import ListView from '../ListView';
 import { Facebook } from 'react-content-loader';
-const Submission = ({ submissions = [], student }: any) => {
+const Submission = ({ submissions = [] }: any) => {
     if (submissions == null) {
         return <Facebook uniqueKey='hero' />;
     }

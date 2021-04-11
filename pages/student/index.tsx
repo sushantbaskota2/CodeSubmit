@@ -8,8 +8,6 @@ import { useLoginStatus } from '../../hooks';
 import { useSelector } from 'react-redux';
 import { Facebook } from 'react-content-loader';
 import Submission from '../../components/students/Submission';
-interface Props {}
-interface CourseProps {}
 
 enum Tabs {
     COURSES = 'Courses',
@@ -18,10 +16,10 @@ enum Tabs {
     SUBMISSIONS = 'Submissions'
 }
 
-const student = (props: Props) => {
+const student = () => {
     const [ activeTab, setactiveTab ] = useState(Tabs.COURSES);
     const state: any = useSelector((state) => state);
-    const { isLoggedIn } = useLoginStatus(state);
+    useLoginStatus(state);
     const [ studentData, setstudentData ] = useState<any>({
         courses: null,
         problems: null,
@@ -54,17 +52,18 @@ const student = (props: Props) => {
         [ state ]
     );
     if (state.client.isLoggedIn === null) {
-        return <Facebook />;
+        return <Facebook uniqueKey='hero' />;
     }
     return (
         <div className='MainPage'>
-            <Nav loggedIn={isLoggedIn} />
+            <Nav />
             <section className='container'>
                 <div className='tabs'>
                     {Object.keys(Tabs).map((name) => {
                         let tabName: Tabs = Tabs[name as keyof typeof Tabs];
                         return (
                             <span
+                                key={tabName}
                                 onClick={() => {
                                     setactiveTab(tabName);
                                     localStorage.setItem('tab', tabName);

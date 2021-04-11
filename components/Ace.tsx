@@ -7,17 +7,15 @@ import 'ace-builds/src-noconflict/snippets/javascript';
 import 'ace-builds/src-noconflict/ext-language_tools';
 import 'ace-builds/src-noconflict/ext-searchbox';
 
-type AceProps = {};
-import { tests } from '../utils/sampledata';
 import { Test } from '../interfaces/index';
 import { Test as TestList } from './Test';
 import axios from '../utils/axios';
-import { Code, Instagram } from 'react-content-loader';
+import { Code } from 'react-content-loader';
 
 const Ace: React.FC<any> = (props) => {
     const [ consoletab, setconsoletab ] = useState<0 | 1>(0);
     const [ code, setcode ] = useState<string>(props.starterCode);
-    const [ testcases, settestcases ] = useState<any>(props.testcases);
+    const [ testcases ] = useState<any>(props.testcases);
     const [ submission, setsubmission ] = useState<any>(null);
     const [ loading, setLoading ] = useState<Boolean>(false);
 

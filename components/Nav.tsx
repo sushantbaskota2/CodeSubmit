@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { Bell, Power } from 'react-feather';
+import { Power } from 'react-feather';
 import { useDispatch, useSelector } from 'react-redux';
 import { userLogout } from '../actions';
-interface Props {
-    loggedIn: boolean | null;
-}
+// interface Props {
+//     loggedIn: boolean | null;
+// }
 
-const Nav = (props: Props) => {
+const Nav = () => {
     const router = useRouter();
     const dispatch = useDispatch();
     const state: any = useSelector((state) => state);

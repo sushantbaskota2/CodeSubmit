@@ -22,8 +22,6 @@ export const userLogin = async ({ email, password, dispatch , router, toast}: Lo
 export const createUser = async ({email, password, name, instructor, toast, setloginType}: any)=>{
     try{
         console.log(email, password, name,  instructor);
-        
-    const { data } = await axios.post('/users/', { email, password, name, instructor });
     toast('Created account successfully. Now you can login', {appearance:'success', autoDismiss:true})
     setloginType(LoginType.Login)
 }catch(e){
