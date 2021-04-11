@@ -6,4 +6,4 @@ const  baseURL = process.env.NEXT_PUBLIC_BASE_URL
 
 // console.log(publicRuntimeConfig);
 
-export default axios.create({baseURL})
+export default axios.create({baseURL, withCredentials:true})
