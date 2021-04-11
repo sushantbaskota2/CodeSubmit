@@ -1,7 +1,6 @@
 import {createStore, AnyAction} from 'redux';
 import {MakeStore, createWrapper, Context, HYDRATE} from 'next-redux-wrapper';
 import {CLIENT_LOGIN, CLIENT_SIGNOUT} from './actions/types'
-import { composeWithDevTools } from 'remote-redux-devtools'
 export interface State {
     server: any;
     client: any;

@@ -5,28 +5,28 @@ import { Facebook } from 'react-content-loader';
 import { useRouter } from 'next/router';
 import axios from '../utils/axios';
 // import { routeros } from 'react-syntax-highlighter/dist/esm/styles/hljs';
-const problemsDummy = [
-    {
-        problemName: 'Check Palindrome',
-        courseName: 'CSCI 346',
-        assigned: false
-    },
-    {
-        problemName: 'Check Anagram',
-        courseName: 'CSCI 346',
-        assigned: false
-    },
-    {
-        problemName: 'Check Pal',
-        courseName: 'CSCI 346',
-        assigned: true
-    },
-    {
-        problemName: 'Check drome',
-        courseName: 'CSCI 346',
-        assigned: true
-    }
-];
+// const problemsDummy = [
+//     {
+//         problemName: 'Check Palindrome',
+//         courseName: 'CSCI 346',
+//         assigned: false
+//     },
+//     {
+//         problemName: 'Check Anagram',
+//         courseName: 'CSCI 346',
+//         assigned: false
+//     },
+//     {
+//         problemName: 'Check Pal',
+//         courseName: 'CSCI 346',
+//         assigned: true
+//     },
+//     {
+//         problemName: 'Check drome',
+//         courseName: 'CSCI 346',
+//         assigned: true
+//     }
+// ];
 const Problems = ({ problems, submissions, student = false }: any) => {
     const router = useRouter();
     console.log('====================================');
@@ -45,7 +45,7 @@ const Problems = ({ problems, submissions, student = false }: any) => {
                         }
                         return !submissions.find((submission: any) => submission.problemId == problem._id);
                     })
-                    .map(({ title, courseID, assign, _id }: any) => (
+                    .map(({ title, assign, _id }: any) => (
                         <div
                             key={_id}
                             className='list-item'

@@ -1,8 +1,7 @@
 import React, { Fragment, useState } from 'react';
 import * as Icons from 'react-feather';
-import { Test as TestProps } from '../interfaces/index';
 
-export const Test = ({ input, output, ConsoleOutput, ExpectedOutput, ErrorOutput, run, submission, score }: any) => {
+export const Test = ({ input, output, ExpectedOutput, ErrorOutput, run, submission }: any) => {
     const [ expanded, setexpanded ] = useState(false);
 
     const toggle = () => {
