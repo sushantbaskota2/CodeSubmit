@@ -1,15 +1,15 @@
-import {useState, useEffect} from 'react'
-import {UserType} from '../utils/types'
+import { useEffect} from 'react'
+
 import {CLIENT_LOGIN} from '../actions/types'
 import axios from '../utils/axios'
-import {useSelector, useDispatch} from 'react-redux'
+import { useDispatch} from 'react-redux'
 import {useRouter} from 'next/router'
-import login from '../pages/login'
-type LoginStatus = {
-    isLoggedIn: boolean|null;
-    user: any;
-    userType: any
-}
+
+// type LoginStatus = {
+//     isLoggedIn: boolean|null;
+//     user: any;
+//     userType: any
+// }
 export const useLoginStatus = (state:any) => {
 
     const dispatch = useDispatch();

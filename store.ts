@@ -1,5 +1,5 @@
 import {createStore, AnyAction} from 'redux';
-import {MakeStore, createWrapper, Context, HYDRATE} from 'next-redux-wrapper';
+import {MakeStore, createWrapper, HYDRATE} from 'next-redux-wrapper';
 import {CLIENT_LOGIN, CLIENT_SIGNOUT} from './actions/types'
 export interface State {
     server: any;
@@ -50,7 +50,7 @@ const reducer = (state: State = {server: {tick: 'lamo'}, client:{user:null, isLo
 // const composeEnhancers= composeWithDevTools({realtime:true});
 
 // create a makeStore function
-const makeStore: MakeStore<State> = (context: Context) => createStore(reducer);
+const makeStore: MakeStore<State> = () => createStore(reducer);
 
 // export an assembled wrapper
 export const wrapper = createWrapper<State>(makeStore, {debug: true});
