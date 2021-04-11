@@ -6,14 +6,14 @@ import { useLoginStatus } from '../../hooks';
 import { useSelector } from 'react-redux';
 import { ToastProvider } from 'react-toast-notifications';
 
-interface Props {}
+// interface Props {}
 
-const index = (props: Props) => {
+const index = () => {
     const state = useSelector((state) => state);
-    const { isLoggedIn } = useLoginStatus(state);
+    useLoginStatus(state);
     return (
         <div className='MainPage'>
-            <Nav loggedIn={isLoggedIn} />
+            <Nav />
             <div className='container'>
                 <ToastProvider>
                     <NewProblem />

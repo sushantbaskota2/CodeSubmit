@@ -5,22 +5,20 @@ import { userLogin, createUser } from '../actions/index';
 import { useSelector, useDispatch } from 'react-redux';
 import { useToasts, ToastProvider } from 'react-toast-notifications';
 import axios from '../utils/axios';
-import { useLoginStatus } from '../hooks';
+// import { useLoginStatus } from '../hooks';
 import { UserType, LoginType } from '../utils/types';
 import { CLIENT_LOGIN } from '../actions/types';
-import { Facebook } from 'react-content-loader';
-interface Props {}
 
-const ToastButton = () => {
-    const { addToast } = useToasts();
-    return (
-        <button
-            onClick={() => {
-                return addToast('Aayo hai kanxa', { appearance: 'error', autoDismiss: true });
-            }}
-        />
-    );
-};
+// const ToastButton = () => {
+//     const { addToast } = useToasts();
+//     return (
+//         <button
+//             onClick={() => {
+//                 return addToast('Aayo hai kanxa', { appearance: 'error', autoDismiss: true });
+//             }}
+//         />
+//     );
+// };
 
 const LoginButton = ({ loginType, userType, emailAddress, password, dispatch, router, name, setloginType }: any) => {
     const { addToast } = useToasts();
@@ -55,7 +53,7 @@ const LoginButton = ({ loginType, userType, emailAddress, password, dispatch, ro
     );
 };
 
-const login = (props: Props) => {
+const login = () => {
     const dispatch = useDispatch();
     const router = useRouter();
     const [ loginType, setloginType ] = useState<LoginType.Login | LoginType.SignUp>(LoginType.Login);
@@ -94,7 +92,7 @@ const login = (props: Props) => {
 
     return (
         <div className='MainPage'>
-            <Nav loggedIn={state.client.isLoggedIn} />
+            <Nav />
             <div className='container'>
                 <ToastProvider>
                     <div className='login-card'>
