@@ -5,11 +5,10 @@ import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import axios from '../../utils/axios';
 import { ChevronLeft, Plus, X } from 'react-feather';
-interface Props {}
 
-const Course = (props: Props) => {
+const Course = () => {
     const state: any = useSelector((state) => state);
-    const { isLoggedIn } = useLoginStatus(state);
+    useLoginStatus(state);
     const router = useRouter();
     const { id } = router.query;
     const [ course, setcourse ] = useState<any>(null);
@@ -76,7 +75,7 @@ const Course = (props: Props) => {
 
     return (
         <div className='MainPage'>
-            <Nav loggedIn={isLoggedIn} />
+            <Nav />
             <div className='container'>
                 {course !== null && (
                     <div
