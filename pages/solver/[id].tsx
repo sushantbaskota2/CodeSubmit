@@ -6,21 +6,26 @@ import { Facebook } from 'react-content-loader';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import { useLoginStatus } from '../../hooks';
+import { UserType } from '../../utils/types';
 const Ace = dynamic(() => import('../../components/Ace'), { ssr: false });
 // const { Facebook } = dynamic(() => import('react-content-loader'), { ssr: false });
 
-const solver = () => {
+const solver = (props: any) => {
     const [ problemData, setproblemData ] = useState<any>(null);
     const [ score, setscore ] = useState(0);
     const [ id, setid ] = useState<any>('');
     const state: any = useSelector((state) => state);
-    const { user } = useLoginStatus(state);
+    const { user, userType } = useLoginStatus(state);
+    const [ code, setcode ] = useState(props.problemData.starterCode);
     const router = useRouter();
-    console.log(id);
+
     useEffect(
         () => {
             const { id } = router.query;
             setid(id);
+            if (state.client.UserType === UserType.Instructor) {
+                router.replace('/instructor');
+            }
 
             (async () => {
                 if (id !== undefined) {
@@ -29,12 +34,17 @@ const solver = () => {
                     console.log(problem);
 
                     setproblemData(problem);
+                    if (problemData !== null) {
+                        setcode(problemData.starterCode);
+                    }
                 }
             })();
         },
         [ router.isReady ]
     );
-
+    if (userType === UserType.Instructor) {
+        return <div />;
+    }
     if (problemData == null) {
         return <Facebook uniqueKey={'hero'} />;
     }
@@ -84,7 +94,13 @@ const solver = () => {
                     </div>
                 </div>
                 <div className='solution'>
-                    <Ace testcases={problemData.testcases} starterCode={problemData.starterCode} setscore={setscore} />
+                    <Ace
+                        testcases={problemData.testcases}
+                        code={code}
+                        setcode={setcode}
+                        starterCode={problemData.starterCode}
+                        setscore={setscore}
+                    />
                 </div>
             </div>
             <div className='bottom-footer'>
@@ -103,7 +119,7 @@ const solver = () => {
                                 problemId: problemData._id,
                                 score,
                                 studentId: user._id,
-                                submissionCode: 'sample code'
+                                submissionCode: code
                             });
                             console.log(submission);
 
@@ -119,3 +135,14 @@ const solver = () => {
 };
 
 export default solver;
+
+solver.getInitialProps = async (ctx: any) => {
+    const { id } = ctx.query;
+    let problemData;
+
+    if (id !== undefined) {
+        const { data: problem } = await axios.get(`/problems/problem/${id}`);
+        problemData = problem;
+    }
+    return { problemData };
+};

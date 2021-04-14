@@ -5,12 +5,19 @@ import Nav from '../../components/Nav';
 import { useLoginStatus } from '../../hooks';
 import { useSelector } from 'react-redux';
 import { ToastProvider } from 'react-toast-notifications';
+import { useRouter } from 'next/router';
+import { UserType } from '../../utils/types';
 
 // interface Props {}
 
 const index = () => {
     const state = useSelector((state) => state);
-    useLoginStatus(state);
+    const { userType } = useLoginStatus(state);
+    const router = useRouter();
+    if (userType === UserType.Student) {
+        router.replace('/student');
+        return <div />;
+    }
     return (
         <div className='MainPage'>
             <Nav />

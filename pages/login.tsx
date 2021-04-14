@@ -8,6 +8,7 @@ import axios from '../utils/axios';
 // import { useLoginStatus } from '../hooks';
 import { UserType, LoginType } from '../utils/types';
 import { CLIENT_LOGIN } from '../actions/types';
+import { Facebook } from 'react-content-loader';
 
 // const ToastButton = () => {
 //     const { addToast } = useToasts();
@@ -20,7 +21,17 @@ import { CLIENT_LOGIN } from '../actions/types';
 //     );
 // };
 
-const LoginButton = ({ loginType, userType, emailAddress, password, dispatch, router, name, setloginType }: any) => {
+const LoginButton = ({
+    loginType,
+    userType,
+    confirm,
+    emailAddress,
+    password,
+    dispatch,
+    router,
+    name,
+    setloginType
+}: any) => {
     const { addToast } = useToasts();
     return (
         <input
@@ -42,6 +53,7 @@ const LoginButton = ({ loginType, userType, emailAddress, password, dispatch, ro
                         createUser({
                             email: emailAddress,
                             password,
+                            confirm,
                             instructor: userType === UserType.Instructor,
                             name,
                             toast: addToast,
@@ -63,13 +75,13 @@ const login = () => {
     const [ password, setpassword ] = useState<string>('');
     const [ confirmPassword, setconfirmPassword ] = useState<string>('');
     const state: any = useSelector((state) => state);
-    // const [ loading, setloading ] = useState(true);
+    const [ loading, setloading ] = useState(true);
 
     useEffect(() => {
         if (!state.client.isLoggedIn) {
             const token = localStorage.getItem('token');
             if (!token) {
-                // setloading(false);
+                setloading(false);
                 return;
             }
             (async function handleLogin() {
@@ -78,141 +90,135 @@ const login = () => {
                     dispatch({ type: CLIENT_LOGIN, payload: data });
                     router.push(data.instructor ? UserType.Instructor : UserType.Student);
                 }
+                setloading(false);
             })();
         } else {
             router.push(state.client.user.type ? UserType.Instructor : UserType.Student);
         }
-
-        // return () => setloading(false);
     }, []);
 
-    // if (loading) {
-    //     return <Facebook />;
-    // }
+    if (loading) {
+        return <Facebook uniqueKey={'hero'} />;
+    }
 
     return (
         <div className='MainPage'>
             <Nav />
             <div className='container'>
-                <ToastProvider>
-                    <div className='login-card'>
-                        <span style={{ fontWeight: 900, fontSize: '3rem', color: 'teal' }}>CodeSubmit</span>
-                        <div className='login-form'>
-                            {loginType === LoginType.SignUp && (
-                                <input
-                                    className='field'
-                                    type='text'
-                                    placeholder='Name'
-                                    value={name}
-                                    onChange={({ target: { value } }) => {
-                                        setname(value);
-                                    }}
-                                />
-                            )}
+                <div className='login-card'>
+                    <span style={{ fontWeight: 900, fontSize: '3rem', color: 'teal' }}>CodeSubmit</span>
+                    <div className='login-form'>
+                        {loginType === LoginType.SignUp && (
                             <input
                                 className='field'
-                                type='email'
-                                placeholder='Email Address'
-                                value={emailAddress}
+                                type='text'
+                                placeholder='Name'
+                                value={name}
                                 onChange={({ target: { value } }) => {
-                                    setemailAddress(value);
+                                    setname(value);
                                 }}
                             />
+                        )}
+                        <input
+                            className='field'
+                            type='email'
+                            placeholder='Email Address'
+                            value={emailAddress}
+                            onChange={({ target: { value } }) => {
+                                setemailAddress(value);
+                            }}
+                        />
 
+                        <input
+                            className='field'
+                            type='password'
+                            placeholder='Password'
+                            value={password}
+                            onChange={({ target: { value } }) => {
+                                setpassword(value);
+                            }}
+                        />
+                        {loginType === LoginType.SignUp && (
                             <input
                                 className='field'
                                 type='password'
-                                placeholder='Password'
-                                value={password}
+                                placeholder='Confirm Password'
+                                value={confirmPassword}
                                 onChange={({ target: { value } }) => {
-                                    setpassword(value);
+                                    setconfirmPassword(value);
                                 }}
                             />
-                            {loginType === LoginType.SignUp && (
-                                <input
-                                    className='field'
-                                    type='password'
-                                    placeholder='Confirm Password'
-                                    value={confirmPassword}
-                                    onChange={({ target: { value } }) => {
-                                        setconfirmPassword(value);
-                                    }}
-                                />
-                            )}
+                        )}
 
-                            {loginType === LoginType.SignUp && (
-                                <div className='field'>
-                                    <span style={{ marginBottom: '1rem', fontWeight: 700 }}>User Type</span>
-                                    <br />
-                                    <div className='radio-container'>
-                                        <input
-                                            type='radio'
-                                            name='instructor'
-                                            value={UserType.Instructor}
-                                            checked={userType === UserType.Instructor}
-                                            onChange={({ target: { value } }) => {
-                                                setuserType(
-                                                    value === UserType.Instructor
-                                                        ? UserType.Instructor
-                                                        : UserType.Student
-                                                );
-                                            }}
-                                        />
-                                        <span style={{ paddingLeft: '2rem' }}>Instructor</span>
-                                    </div>
-                                    <br />
-                                    <div className='radio-container'>
-                                        <input
-                                            type='radio'
-                                            name='instructor'
-                                            value={UserType.Student}
-                                            checked={userType === UserType.Student}
-                                            onChange={({ target: { value } }) => {
-                                                setuserType(
-                                                    value === UserType.Instructor
-                                                        ? UserType.Instructor
-                                                        : UserType.Student
-                                                );
-                                            }}
-                                        />
-                                        <span style={{ paddingLeft: '2rem' }}>Student</span>
-                                    </div>
-                                </div>
-                            )}
-                            {/* <ToastButton /> */}
-                            <LoginButton
-                                emailAddress={emailAddress}
-                                userType={userType}
-                                router={router}
-                                dispatch={dispatch}
-                                password={password}
-                                loginType={loginType}
-                                name={name}
-                                setloginType={setloginType}
-                            />
-                            {LoginType.SignUp === loginType ? (
-                                <span className='field alternate'>
-                                    Have an Account?{' '}
-                                    <span
-                                        className='active'
-                                        onClick={() => {
-                                            setloginType(LoginType.Login);
+                        {loginType === LoginType.SignUp && (
+                            <div className='field'>
+                                <span style={{ marginBottom: '1rem', fontWeight: 700 }}>User Type</span>
+                                <br />
+                                <div className='radio-container'>
+                                    <input
+                                        type='radio'
+                                        name='instructor'
+                                        value={UserType.Instructor}
+                                        checked={userType === UserType.Instructor}
+                                        onChange={({ target: { value } }) => {
+                                            setuserType(
+                                                value === UserType.Instructor ? UserType.Instructor : UserType.Student
+                                            );
                                         }}
-                                    >
-                                        Login
-                                    </span>
+                                    />
+                                    <span style={{ paddingLeft: '2rem' }}>Instructor</span>
+                                </div>
+                                <br />
+                                <div className='radio-container'>
+                                    <input
+                                        type='radio'
+                                        name='instructor'
+                                        value={UserType.Student}
+                                        checked={userType === UserType.Student}
+                                        onChange={({ target: { value } }) => {
+                                            setuserType(
+                                                value === UserType.Instructor ? UserType.Instructor : UserType.Student
+                                            );
+                                        }}
+                                    />
+                                    <span style={{ paddingLeft: '2rem' }}>Student</span>
+                                </div>
+                            </div>
+                        )}
+                        {/* <ToastButton /> */}
+                        <LoginButton
+                            emailAddress={emailAddress}
+                            userType={userType}
+                            router={router}
+                            dispatch={dispatch}
+                            password={password}
+                            loginType={loginType}
+                            name={name}
+                            setloginType={setloginType}
+                            confirm={confirmPassword}
+                        />
+                        {LoginType.SignUp === loginType ? (
+                            <span className='field alternate'>
+                                Have an Account?{' '}
+                                <span
+                                    className='active'
+                                    onClick={() => {
+                                        setloginType(LoginType.Login);
+                                    }}
+                                >
+                                    Login
                                 </span>
-                            ) : (
-                                <span className='field alternate'>
-                                    Need an Account?{' '}
-                                    <span className='active' onClick={() => setloginType(LoginType.SignUp)}>
-                                        Sign Up
-                                    </span>
+                            </span>
+                        ) : (
+                            <span className='field alternate'>
+                                Need an Account?{' '}
+                                <span className='active' onClick={() => setloginType(LoginType.SignUp)}>
+                                    Sign Up
                                 </span>
-                            )}
-                        </div>
+                            </span>
+                        )}
                     </div>
-                </ToastProvider>
+                </div>
             </div>
         </div>
     );

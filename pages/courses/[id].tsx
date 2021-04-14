@@ -5,10 +5,13 @@ import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import axios from '../../utils/axios';
 import { ChevronLeft, Plus, X } from 'react-feather';
+import { useToasts } from 'react-toast-notifications';
+import { UserType } from '../../utils/types';
 
 const Course = () => {
     const state: any = useSelector((state) => state);
-    useLoginStatus(state);
+    const { userType } = useLoginStatus(state);
+    const { addToast } = useToasts();
     const router = useRouter();
     const { id } = router.query;
     const [ course, setcourse ] = useState<any>(null);
@@ -49,8 +52,10 @@ const Course = () => {
     const handleEnroll = async () => {
         setfetch(!fetch);
         await axios.post(`courses/enroll/${id}`, { studentEmails: selectedEmails });
+        const num = selectedEmails.length;
         setselectedEmails([]);
         router.reload();
+        addToast(`Enrolled ${num} students`);
         setfetch(!fetch);
     };
 
@@ -72,7 +77,10 @@ const Course = () => {
         },
         [ selectedEmails, users ]
     );
-
+    if (userType === UserType.Student) {
+        router.replace('/student');
+        return <div />;
+    }
     return (
         <div className='MainPage'>
             <Nav />
@@ -116,6 +124,10 @@ const Course = () => {
                                                 studentId: student._id
                                             });
                                             router.reload();
+                                            addToast(`Removed ${student.name} successfully`, {
+                                                appearance: 'success',
+                                                autoDismiss: true
+                                            });
                                         }}
                                     />
                                 </div>

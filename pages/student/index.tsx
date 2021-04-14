@@ -3,11 +3,12 @@ import axios from '../../utils/axios';
 import Nav from '../../components/Nav';
 import Courses from '../../components/students/Courses';
 import Problems from '../../components/Problems';
-import { Navigation } from '../../utils/types';
+import { Navigation, UserType } from '../../utils/types';
 import { useLoginStatus } from '../../hooks';
 import { useSelector } from 'react-redux';
 import { Facebook } from 'react-content-loader';
 import Submission from '../../components/students/Submission';
+import { useRouter } from 'next/router';
 
 enum Tabs {
     COURSES = 'Courses',
@@ -19,7 +20,8 @@ enum Tabs {
 const student = () => {
     const [ activeTab, setactiveTab ] = useState(Tabs.COURSES);
     const state: any = useSelector((state) => state);
-    useLoginStatus(state);
+    const { userType } = useLoginStatus(state);
+    const router = useRouter();
     const [ studentData, setstudentData ] = useState<any>({
         courses: null,
         problems: null,
@@ -53,6 +55,10 @@ const student = () => {
     );
     if (state.client.isLoggedIn === null) {
         return <Facebook uniqueKey='hero' />;
+    }
+    if (userType === UserType.Instructor) {
+        router.replace('/instructor');
+        return <div />;
     }
     return (
         <div className='MainPage'>

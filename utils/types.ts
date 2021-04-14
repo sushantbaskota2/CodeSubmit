@@ -24,3 +24,8 @@ export enum LoginType {
     Login = 'Login',
     SignUp = 'Sign Up'
 }
+export type TestCase = {
+    id: number;
+    input: string;
+    output: string;
+};

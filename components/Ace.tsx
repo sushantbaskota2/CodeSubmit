@@ -14,7 +14,7 @@ import { Code } from 'react-content-loader';
 
 const Ace: React.FC<any> = (props) => {
     const [ consoletab, setconsoletab ] = useState<0 | 1>(0);
-    const [ code, setcode ] = useState<string>(props.starterCode);
+    // const [ code, setcode ] = useState<string>(props.starterCode);
     const [ testcases ] = useState<any>(props.testcases);
     const [ submission, setsubmission ] = useState<any>(null);
     const [ loading, setLoading ] = useState<Boolean>(false);
@@ -33,7 +33,7 @@ const Ace: React.FC<any> = (props) => {
                 showPrintMargin={true}
                 showGutter={true}
                 highlightActiveLine={true}
-                value={code}
+                value={props.code}
                 style={{ width: '100%', paddingTop: '2rem', height: '50%' }}
                 setOptions={{
                     enableBasicAutocompletion: true,
@@ -44,7 +44,7 @@ const Ace: React.FC<any> = (props) => {
                     tabSize: 2
                 }}
                 onChange={(val) => {
-                    setcode(val);
+                    props.setcode(val);
                 }}
             />
             <div className='console-container'>
@@ -62,7 +62,7 @@ const Ace: React.FC<any> = (props) => {
                         onClick={async () => {
                             setLoading(true);
                             const { data } = await axios.post('/solve', {
-                                studentCode: code,
+                                studentCode: props.code,
                                 testcases
                             });
                             setLoading(false);

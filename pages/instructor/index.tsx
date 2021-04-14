@@ -5,14 +5,15 @@ import Courses from '../../components/instructors/Courses';
 import Submission from '../../components/instructors/Submission';
 import Nav from '../../components/Nav';
 import { useSelector } from 'react-redux';
-import { Tabs, Navigation } from '../../utils/types';
+import { Tabs, Navigation, UserType } from '../../utils/types';
 import { Facebook } from 'react-content-loader';
 import axios from '../../utils/axios';
 import { useLoginStatus } from '../../hooks';
+import { useRouter } from 'next/router';
 
 const instructor = () => {
     const state: any = useSelector((state) => state);
-
+    const router = useRouter();
     const [ activeTab, setactiveTab ] = useState<any>(Tabs.COURSES);
     const [ instructorData, setinstructorData ] = useState<any>({
         problems: null,
@@ -24,10 +25,7 @@ const instructor = () => {
         [Tabs.COURSES]: <Courses courses={instructorData.courses} />,
         [Tabs.SUBMISSIONS]: <Submission submissions={instructorData.submissions} />
     };
-    useLoginStatus(state);
-    // if (!isLoggedIn && userType !== 'Instructor') {
-    //     return 'Unauthorized';
-    // }
+    const { userType } = useLoginStatus(state);
 
     useEffect(() => {
         const tab = localStorage.getItem('tab');
@@ -53,6 +51,10 @@ const instructor = () => {
                 getInstructorData({
                     headers: { Authorization: `Bearer ${token}` }
                 });
+
+                if (userType === UserType.Student) {
+                    router.replace('/student');
+                }
             }
         },
         [ state ]
@@ -69,6 +71,13 @@ const instructor = () => {
 
     if (state.client.isLoggedIn === null) {
         return <Facebook uniqueKey='hero123' />;
+    }
+
+    console.log('====================================');
+    console.log(userType);
+    console.log('====================================');
+    if (userType === UserType.Student) {
+        return <div />;
     }
     return (
         <div className='MainPage'>

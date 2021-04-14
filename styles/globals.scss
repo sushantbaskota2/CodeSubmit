@@ -72,7 +72,26 @@ body{
             color: white;
             
         }
+        .submission-container{
+            .submission-title{
+                font-size: 1.6rem;
+                color: teal;
+                span{
+                    font-weight: 700;
+                }
+            }
 
+            .Button{
+                margin: .5rem;
+                border: none;
+                font-size: 1.6rem;
+                border-radius: 3px;
+                background-color: teal;
+                color: white;
+                cursor: pointer;
+                padding: 1rem;
+            }
+        }
         .main{
             margin: 2rem 0;
             border-radius: 3px;

@@ -1,8 +1,43 @@
 import { useRouter } from 'next/router';
+import { Facebook } from 'react-content-loader';
+import { useSelector, useDispatch } from 'react-redux';
+import axios from '../utils/axios';
 import './IndexPage.module.scss';
-
+import { useEffect, useState } from 'react';
+import { CLIENT_LOGIN } from '../actions/types';
+import { UserType, LoginType } from '../utils/types';
 const IndexPage = () => {
     const router = useRouter();
+    const dispatch = useDispatch();
+    const state: any = useSelector((state) => state);
+    // const { isLoggedIn } = useLoginStatus(state);
+    const [ loading, setloading ] = useState(true);
+    useEffect(() => {
+        if (!state.client.isLoggedIn) {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                setloading(false);
+                return;
+            }
+            (async function handleLogin() {
+                const { data } = await axios.get('/users/me', { headers: { Authorization: `Bearer ${token}` } });
+                if (data) {
+                    dispatch({ type: CLIENT_LOGIN, payload: data });
+                    router.push(data.instructor ? UserType.Instructor : UserType.Student);
+                }
+            })();
+            setloading(false);
+        } else {
+            router.push(state.client.user.type ? UserType.Instructor : UserType.Student);
+        }
+
+        // return () => setloading(false);
+    }, []);
+
+    if (loading) {
+        return <Facebook uniqueKey='hero' />;
+    }
+
     return (
         <div className='Landing'>
             <nav className='top'>

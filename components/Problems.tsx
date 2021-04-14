@@ -55,7 +55,9 @@ const Problems = ({ problems, submissions, student = false }: any) => {
                                         router.push(`/solver/${_id}`);
                                     }
                                 ) : (
-                                    () => {}
+                                    () => {
+                                        router.push(`/problems/${_id}`);
+                                    }
                                 )
                             }
                         >
@@ -69,7 +71,8 @@ const Problems = ({ problems, submissions, student = false }: any) => {
                                 ) : (
                                     <span
                                         className='assignButton'
-                                        onClick={async () => {
+                                        onClick={async (e) => {
+                                            e.stopPropagation();
                                             await axios.patch(`/problems/${_id}`, { assign: true });
                                             router.reload();
                                         }}
