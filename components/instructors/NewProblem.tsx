@@ -80,7 +80,16 @@ const NewProblem = () => {
     const [ problemName, setproblemName ] = useState<string>('');
     const [ description, setdescription ] = useState<string>('');
     const [ totalPoints, settotalPoints ] = useState<number>(100);
-    const [ code, setcode ] = useState<string>('');
+    const [ code, setcode ] = useState<string>(`
+    const instructor = (input, output)=>{
+        //instructor logic here
+        //returns boolean if student(input) matches output
+    }
+
+    const student = (input )=>{
+        //student logic here
+    }
+    `);
     const [ courses, setcourses ] = useState<any>(null);
     const [ courseID, setCourseID ] = useState<any>('');
     const [ assign, setassign ] = useState<boolean>(false);
