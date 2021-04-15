@@ -44,10 +44,7 @@ const IndexPage = () => {
                 <div className='left'>
                     <span>Code</span>Submit
                 </div>
-                <div className='right'>
-                    <span>About Us</span>
-                    <span className='signup'>Sign Up</span>
-                </div>
+                <div className='right' />
             </nav>
             <div className='banner'>
                 <div className='left'>
