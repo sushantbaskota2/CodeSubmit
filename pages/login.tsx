@@ -85,10 +85,14 @@ const login = () => {
                 return;
             }
             (async function handleLogin() {
-                const { data } = await axios.get('/users/me', { headers: { Authorization: `Bearer ${token}` } });
-                if (data) {
-                    dispatch({ type: CLIENT_LOGIN, payload: data });
-                    router.push(data.instructor ? UserType.Instructor : UserType.Student);
+                try {
+                    const { data } = await axios.get('/users/me', { headers: { Authorization: `Bearer ${token}` } });
+                    if (data) {
+                        dispatch({ type: CLIENT_LOGIN, payload: data });
+                        router.push(data.instructor ? UserType.Instructor : UserType.Student);
+                    }
+                } catch (e) {
+                    setloading(false);
                 }
                 setloading(false);
             })();
