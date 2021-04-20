@@ -60,16 +60,16 @@ const IndexPage = () => {
                                 router.push('/login');
                             }}
                         >
-                            I am an instructor
+                            Get Started
                         </div>
-                        <div
+                        {/* <div
                             className='two'
                             onClick={() => {
                                 router.push('/login');
                             }}
                         >
                             I am a student
-                        </div>
+                        </div> */}
                     </div>
                 </div>
                 <div className='right'>
