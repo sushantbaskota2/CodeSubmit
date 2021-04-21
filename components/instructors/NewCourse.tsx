@@ -1,11 +1,13 @@
 import axios from '../../utils/axios';
 import { useRouter } from 'next/router';
 import React, { useState, Fragment } from 'react';
+import { useToasts } from 'react-toast-notifications';
 
 const NewCourse = () => {
     const [ title, settitle ] = useState('');
     const [ courseID, setcourseID ] = useState('');
     const router = useRouter();
+    const { addToast } = useToasts();
     return (
         <Fragment>
             <div className='tabs'>New Course</div>
@@ -25,6 +27,10 @@ const NewCourse = () => {
                 <button
                     onClick={async () => {
                         const token = localStorage.getItem('token');
+                        if (title === '' || courseID == '') {
+                            addToast('Please add title and courseID', { appearance: 'warning', autoDismiss: true });
+                            return;
+                        }
                         await axios.post(
                             '/courses',
                             {

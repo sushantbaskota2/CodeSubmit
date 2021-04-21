@@ -80,15 +80,14 @@ const NewProblem = () => {
     const [ problemName, setproblemName ] = useState<string>('');
     const [ description, setdescription ] = useState<string>('');
     const [ totalPoints, settotalPoints ] = useState<number>(100);
-    const [ code, setcode ] = useState<string>(`
-    const instructor = (input, output)=>{
-        //instructor logic here
-        //returns boolean if student(input) matches output
-    }
+    const [ code, setcode ] = useState<string>(`const instructor = (input, output)=>{
+//instructor logic here
+//returns boolean if student(input) matches output
+}
 
-    const student = (input )=>{
-        //student logic here
-    }
+const student = (input )=>{
+//student logic here
+}
     `);
     const [ courses, setcourses ] = useState<any>(null);
     const [ courseID, setCourseID ] = useState<any>('');
@@ -96,10 +95,10 @@ const NewProblem = () => {
     const { addToast } = useToasts();
     const state: any = useSelector((state) => state);
     const router = useRouter();
-    useEffect(() => {
-        const localCode = localStorage.getItem('code');
-        if (localCode && localCode !== '') setcode(() => localCode);
-    }, []);
+    // useEffect(() => {
+    //     const localCode = localStorage.getItem('code');
+    //     if (localCode && localCode !== '') setcode(() => localCode);
+    // }, []);
 
     useEffect(() => {
         if (state.client.isLoggedIn) {

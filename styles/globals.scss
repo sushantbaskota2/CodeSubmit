@@ -704,7 +704,7 @@ display: flex;
                     }
                 }
                 .instructions{
-                    display: flex;
+                    // display: flex;
                     flex-wrap: wrap;
                     margin-top: 2rem;
                     .bolded{
@@ -717,6 +717,23 @@ display: flex;
         .solution{
 width: 50%;
 height: 100%;
+        .language-container{
+            height: 3rem;
+            background: $codingbody;
+            display: flex;
+            justify-content: flex-start;
+
+            .language{
+                align-self: center;
+                margin: .5rem 2rem;
+                padding: .5rem;
+                font-size: 1.3rem;
+                color: white;
+                border-radius: 3px;
+                background-color: rgba(yellow, 0.5);
+                border: $translucentGray;
+            }
+        }
 
             .console-container{
                 height: 50%;

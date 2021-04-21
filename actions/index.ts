@@ -28,7 +28,6 @@ export const userLogin = async ({ email, password, dispatch , router, toast}: Lo
 
 export const createUser = async ({email, password, confirm,  name, instructor, toast, setloginType}: any)=>{
     try{
-        console.log(email, password,confirm,  name,  instructor);
         if(name===''){
             toast('Enter a valid name', {appearance:'warning', autoDismiss:true})
         }

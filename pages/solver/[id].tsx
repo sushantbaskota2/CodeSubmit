@@ -55,7 +55,7 @@ const solver = (props: any) => {
                     <Icons.ChevronLeft />
                     <span>BACK</span>
                 </div>
-                <div className='middle'>Question</div>
+                <div className='middle'>{problemData.title}</div>
                 <div className='right'>
                     <Icons.Bell />
                     <div className='profile' />
@@ -75,8 +75,8 @@ const solver = (props: any) => {
                     <div className='body'>
                         <div className='tags'>
                             <div className='tag'>
-                                <Icons.Clock fontSize={'1.6rem'} color='teal' />
-                                <span>14th Feb</span>
+                                {/* <Icons.Clock fontSize={'1.6rem'} color='teal' />
+                                <span /> */}
                             </div>
                             {/* <div className='tag'>
                                 <Icons.Lock fontSize={'1.6rem'} color='teal' />
@@ -88,12 +88,15 @@ const solver = (props: any) => {
                             </div>
                         </div>
                         <div className='instructions'>
-                            <span className='bolded'>{problemData.title}</span>
-                            {problemData.description}
+                            <div className='bolded'>{problemData.title}</div>
+                            <div>{problemData.description}</div>
                         </div>
                     </div>
                 </div>
                 <div className='solution'>
+                    <div className='language-container'>
+                        <span className='language'>JavaScript</span>
+                    </div>
                     <Ace
                         testcases={problemData.testcases}
                         code={code}

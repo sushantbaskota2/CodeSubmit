@@ -137,13 +137,6 @@ const Course = () => {
                             <div className='add-student-container'>
                                 <div className='add-input-container'>
                                     <input
-                                        type='text'
-                                        value={query}
-                                        onChange={(e) => {
-                                            setquery(e.target.value);
-                                        }}
-                                    />
-                                    <input
                                         type='button'
                                         value='Enroll'
                                         className='enroll-button'
